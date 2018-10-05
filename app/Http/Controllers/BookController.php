@@ -22,9 +22,7 @@ class BookController extends Controller
         foreach ($books as $book) {
             $book->user = $book->users()->where('status', 1)->first();
             $book->category = $book->categories()->first();
-            // $book->users()->orderBy('name')->get();
         }
-        // $comment = App\Post::find(1)->comments()->where('title', 'foo')->first();
         $response = [
             'response' => $books
         ];
@@ -44,22 +42,20 @@ class BookController extends Controller
             'name' => 'required|unique:books|max:190',
             'author' => 'required|max:190',
             'category' => 'required|integer',
-            'published' => 'required|date_format:Y-m-d',
-            'status' => 'required|boolean'
+            'published' => 'required|date_format:Y-m-d'
         ]);
 
         $name = strip_tags(trim($request->input('name')));
         $author = strip_tags(trim($request->input('author')));
         $category = strip_tags(trim($request->input('category')));
         $published = strip_tags(trim($request->input('published')));
-        $status = strip_tags(trim($request->input('status')));
 
         $book = new Book([
             'name' => $name,
             'author' => $author,
             'category_id' => $category,
             'published_date' => Carbon::createFromFormat('Y-m-d', $published),
-            'status' => $status
+            'status' => 1
         ]);
 
         if ($book->save()) {
@@ -68,6 +64,7 @@ class BookController extends Controller
                 "name" => $book->name,
                 "author" => $book->author,
                 "category_id" => $book->category_id,
+                "category" => $book->categories()->first(),
                 "published_date" => $book->published_date->toDateString(),
                 "status" => $book->status,
                 "created_at" => $book->created_at->toDateTimeString(),
@@ -163,7 +160,6 @@ class BookController extends Controller
         $author = strip_tags(trim($request->input('author')));
         $category = strip_tags(trim($request->input('category')));
         $published = strip_tags(trim($request->input('published')));
-        $status = strip_tags(trim($request->input('status')));
 
         if ($request->has('name')) {
             $this->validate($request, [
@@ -188,12 +184,6 @@ class BookController extends Controller
                 'published' => 'required|date_format:Y-m-d',
             ]);
             $book->published_date = Carbon::createFromFormat('Y-m-d', $published);
-        }
-        if ($request->has('status')) {
-            $this->validate($request, [
-                'status' => 'required|boolean'
-            ]);
-            $book->status = $status;
         }
 
         if (!$book->update()) {

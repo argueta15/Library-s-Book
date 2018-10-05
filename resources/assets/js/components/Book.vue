@@ -14,60 +14,78 @@
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
-
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="editedItem.author" label="Author"></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-subheader class="pa-0">Select category:</v-subheader>
-                  <v-autocomplete
-                    v-model="editedItem.category_id"
-                    :items="categories"
-                    item-text="name"
-                    item-value="id"
-                    :readonly="!isEditing"
-                    label="Category"
-                    prepend-icon="category"
-                  >
-                  </v-autocomplete>
-                </v-flex>
-                <v-flex xs12>
-                  <v-menu
-                    ref="menu2"
-                    :close-on-content-click="false"
-                    v-model="menu2"
-                    :nudge-right="40"
-                    :return-value.sync="editedItem.published_date"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="290px"
-                  >
+          <v-form novalidate @submit.stop.prevent="save">
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12>
                     <v-text-field
-                      slot="activator"
-                      v-model="editedItem.published_date"
-                      label="Published Date"
-                      prepend-icon="event"
-                      readonly
-                    ></v-text-field>
-                    <v-date-picker v-model="editedItem.published_date" @input="$refs.menu2.save(editedItem.published_date)"></v-date-picker>
-                  </v-menu>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
-          </v-card-actions>
+                      v-validate="'required'"
+                      :error-messages="errors.collect('name')"
+                      data-vv-name="name"
+                      v-model="editedItem.name"
+                      label="Name"
+                      required>
+                    </v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field
+                    v-validate="'required'"
+                    :error-messages="errors.collect('author')"
+                    data-vv-name="author"
+                     v-model="editedItem.author" label="Author"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-subheader class="pa-0">Select category:</v-subheader>
+                    <v-autocomplete
+                      v-validate="'required'"
+                      :error-messages="errors.collect('category')"
+                      data-vv-name="category"
+                      v-model="editedItem.category"
+                      :items="categories"
+                      item-text="name"
+                      item-value="id"
+                      :readonly="!isEditing"
+                      label="Category"
+                      prepend-icon="category"
+                    >
+                    </v-autocomplete>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-menu
+                      ref="menu2"
+                      :close-on-content-click="false"
+                      v-model="menu2"
+                      :nudge-right="40"
+                      :return-value.sync="editedItem.published_date"
+                      lazy
+                      transition="scale-transition"
+                      offset-y
+                      full-width
+                      min-width="290px"
+                    >
+                      <v-text-field
+                        v-validate="'required'"
+                        :error-messages="errors.collect('published')"
+                        data-vv-name="published"
+                        slot="activator"
+                        v-model="editedItem.published_date"
+                        label="Published Date"
+                        prepend-icon="event"
+                        readonly
+                      ></v-text-field>
+                      <v-date-picker v-model="editedItem.published_date" @input="$refs.menu2.save(editedItem.published_date)"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" flat type="submit">Save</v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-dialog>
       <v-dialog v-model="dialogStatus" max-width="500px">
@@ -103,10 +121,10 @@
       </v-dialog>
       <v-dialog
         v-model="dialogGive"
-        max-width="290"
+        max-width="370"
       >
         <v-card>
-          <v-card-title class="headline">Do you want give Book?</v-card-title>
+          <v-card-title class="headline">{{ textAlert }}</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -119,7 +137,7 @@
             <v-btn
               color="green darken-1"
               flat="flat"
-              @click="saveGiveBook"
+              @click="actionGive"
             >
               Acept
             </v-btn>
@@ -153,7 +171,7 @@
       <template slot="items" slot-scope="props">
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.author }}</td>
-        <td class="text-xs-right">{{ props.item.category_id }}</td>
+        <td class="text-xs-right">{{ props.item.category.name }}</td>
         <td class="text-xs-right">{{ props.item.published_date }}</td>
         <td class="text-xs-right">{{ props.item.user ? props.item.user.name : 'Not user' }}</td>
         <td class="text-xs-right">
@@ -176,7 +194,7 @@
           <v-icon
             small
             class="mr-2"
-            @click="changeStatusGive(props.item)"
+            @click="dialogActive(props.item, 'return')"
             v-else
           >
             loop
@@ -190,7 +208,7 @@
           </v-icon>
           <v-icon
             small
-            @click="deleteItem(props.item)"
+            @click="dialogActive(props.item, 'delete')"
           >
             delete
           </v-icon>
@@ -263,7 +281,8 @@
       editedItem: {
         name: '',
         author: '',
-        category: '',
+        category_id: null,
+        category: [],
         published_date: '',
         user: null,
         status: null
@@ -271,7 +290,8 @@
       defaultItem: {
         name: '',
         author: '',
-        category: '',
+        category_id: null,
+        category: [],
         published_date: '',
         user: null,
         status: null
@@ -285,7 +305,9 @@
       users: [],
       isEditing: true,
       model: null,
-      userBorrow: null
+      userBorrow: null,
+      textAlert: '',
+      actionAlert: ''
     }),
 
     computed: {
@@ -348,16 +370,17 @@
         this.dialog = true
       },
 
-      deleteItem (item) {
-        const index = this.items.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
-        axios.delete(`api/v1/books/${item.id}`)
+      deleteItem () {
+        axios.delete(`api/v1/books/${this.editStatusItem.id}`)
           .then(response => {
             if (response.status == 200){
+              const index = this.items.indexOf(this.editStatusItem)
+              this.items.splice(index, 1)
               this.pagination.totalItems = this.items.length
               this.snackbar = true
               this.text = 'Book delete Ok..'
               this.color = 'green'
+              this.dialogGive = false
               this.close()
             }
           }).catch(error => {
@@ -466,15 +489,27 @@
           })
       },
 
-      save () {
+      async save () {
+        let validate = await this.$validator.validate()
+        if (!validate) {
+          this.snackbar = true
+          this.text = 'All fields are required.'
+          this.color = 'red'
+          return false
+        }
+        for (let cat of this.categories){
+          if(cat.id == this.editedItem.category){
+            this.editedItem.category = cat
+          }
+        }
+        let data = {
+          "name": this.editedItem.name,
+          "author": this.editedItem.author,
+          "category": this.editedItem.category.id,
+          "published": this.editedItem.published_date
+        }
         if (this.editedIndex > -1) {
           Object.assign(this.items[this.editedIndex], this.editedItem)
-          let data = {
-            "name": this.editedItem.name,
-            "author": this.editedItem.author,
-            "category": this.editedItem.category_id,
-            "published": this.editedItem.published_date
-          }
           axios.patch(`api/v1/books/${this.editedItem.id}`, data)
             .then(response => {
               if (response.status == 200){
@@ -504,14 +539,6 @@
             })
           this.close()
         } else {
-          let data = {
-            "name": this.editedItem.name,
-            "author": this.editedItem.author,
-            "category": this.editedItem.category_id,
-            "published": this.editedItem.published_date,
-            "status": 1
-          }
-
           axios.post('api/v1/books', data)
             .then(response => {
               if (response.status == 201){
@@ -546,9 +573,23 @@
         this.editStatusItem = item
         this.dialogStatus = true
       },
-      changeStatusGive (item){
+      dialogActive (item, action){
+        if (action == 'return'){
+          this.textAlert = 'The user returned the book?'
+          this.actionAlert = action          
+        }
+        else if (action == 'delete') {
+          this.textAlert = 'Are you sure you want to delete this item?'
+          this.actionAlert = action          
+        }
         this.editStatusItem = item
         this.dialogGive = true
+      },
+      actionGive () {
+        if(this.actionAlert == 'return')
+          this.saveGiveBook()
+        else if(this.actionAlert == 'delete')
+          this.deleteItem()
       }
     }
   }

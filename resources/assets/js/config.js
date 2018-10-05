@@ -1,5 +1,5 @@
 export const clientId = '2'
-export const clientSecret = 'A9thM9xzniBAvC3uear9v68CcqZo2qiS98LlV1EQ'
+export const clientSecret = 'x6LBdovvhiLaVi7pxdnkF3gvCSavE5AnB5EhveK0'
 export const loginUrl = 'oauth/token'
 export const userUrl = 'api/user'
 export const getHeader = function () {

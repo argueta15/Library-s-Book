@@ -19,8 +19,9 @@ class Book extends Model
     {
         return $this->belongsToMany('App\User');
     }
+
     public function categories()
     {
-        return $this->hasOne('App\Category');
+        return $this->belongsTo('App\Category', 'category_id');
     }
 }

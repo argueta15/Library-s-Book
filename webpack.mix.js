@@ -16,4 +16,4 @@ mix.js('resources/assets/js/app.js', 'public/js')
 		'node_modules/vuetify/dist/vuetify.min.css',
 		'resources/assets/css/main.css'
 	], 'public/css/app.css')
-	.browserSync('localhost:8081');
+	.browserSync('localhost:8000');

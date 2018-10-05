@@ -8,7 +8,7 @@ Vue.use(Auth)
 Vue.use(Vuetify)
 Vue.use(VeeValidate)
 
-axios.defaults.baseURL = 'http://localhost:8081/';
+axios.defaults.baseURL = 'http://localhost:8000/';
 axios.interceptors.request.use(function(config){
     config.headers['Authorization'] = 'Bearer ' + Vue.auth.getToken();
     return config;

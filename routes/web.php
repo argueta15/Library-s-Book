@@ -8,6 +8,12 @@ Route::get('/login', function () {
 Route::get('/admin', function () {
     return view('home');
 });
+Route::get('/admin/categories', function () {
+    return view('home');
+});
+Route::get('/admin/users', function () {
+    return view('home');
+});
 
 //Auth::routes();
 

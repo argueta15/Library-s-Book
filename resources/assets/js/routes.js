@@ -25,7 +25,22 @@ const router = new VueRouter({
 			meta: {
 				forVisitors: false
 			}
+		},
+		{
+			path: "/admin/categories",
+			component: require('./pages/Category.vue'),
+			meta: {
+				forVisitors: false
+			}
+		},
+		{
+			path: "/admin/users",
+			component: require('./pages/User.vue'),
+			meta: {
+				forVisitors: false
+			}
 		}
+
 	],
 	mode: 'history',
 	linkActiveClass: 'active'

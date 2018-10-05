@@ -17,7 +17,7 @@ Route::group(['prefix' => 'v1',  'middleware' => 'auth:api'], function()
     ]);
 
     Route::resource('categories', 'CategoryController', [
-        'except' => ['edit', 'create']
+        'except' => ['edit', 'create', 'destroy']
     ]);
 
     Route::resource('users', 'UserController', [

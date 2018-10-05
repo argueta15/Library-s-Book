@@ -46,16 +46,9 @@ class CategoryController extends Controller
         ]);
 
         if ($category->save()) {
-            $data = [
-                "id" => $category->id,
-                "name" => $category->name,
-                "description" => $category->author,
-                "created_at" => $category->created_at->toDateTimeString(),
-                "updated_at" => $category->updated_at->toDateTimeString()
-            ];
             $message = [
                 'msg' => 'category created',
-                'category' => $data
+                'category' => $category
             ];
             return response()->json($message, 201);
         }
@@ -135,30 +128,4 @@ class CategoryController extends Controller
         return response()->json($response, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $category = Category::find($id);
-        if (empty($category)){
-            $response = [
-                'error' => 'Not Found.'
-            ];
-
-            return response()->json($response, 404);
-        }
-        if (!$category->delete()) {
-            return response()->json(['msg' => 'deletion failed'], 404);
-        }
-
-        $response = [
-            'status' => true
-        ];
-
-        return response()->json($response, 200);
-    }
 }

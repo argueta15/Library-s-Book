@@ -31,7 +31,7 @@ class CreateBooksTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->tinyInteger('status')->default(1);
 
-            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

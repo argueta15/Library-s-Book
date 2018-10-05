@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use App\User;
 
@@ -17,9 +18,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $books = User::where('type', 'guest')->get();
+        $users = User::where('type', 'guest')->get();
         $response = [
-            'response' => $books
+            'response' => $users
         ];
         return response()->json($response, 200);
 
@@ -33,42 +34,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        /*$this->validate($request, [
-            'name' => 'required|unique:books|max:190',
-            'author' => 'required|max:190',
-            'category' => 'required|integer',
-            'published' => 'required|date_format:Y-m-d',
-            'status' => 'required|boolean'
+        $this->validate($request, [
+            'name' => 'required|max:190',
+            'email' => 'required|unique:users|email|max:190',
+            'phone' => 'required|numeric|max:9999999999'
         ]);
 
         $name = strip_tags(trim($request->input('name')));
-        $author = strip_tags(trim($request->input('author')));
-        $category = strip_tags(trim($request->input('category')));
-        $published = strip_tags(trim($request->input('published')));
-        $status = strip_tags(trim($request->input('status')));
+        $email = strip_tags(trim($request->input('email')));
+        $phone = strip_tags(trim($request->input('phone')));
+        $password = "Aa12345678";
 
-        $book = new Book([
+        $user = new User([
             'name' => $name,
-            'author' => $author,
-            'category_id' => $category,
-            'published_date' => Carbon::createFromFormat('Y-m-d', $published),
-            'status' => $status
+            'email' => $email,
+            'password' => bcrypt($password),
+            'phone' => $phone,
         ]);
 
-        if ($book->save()) {
-            $data = [
-                "id" => $book->id,
-                "name" => $book->name,
-                "author" => $book->author,
-                "category_id" => $book->category_id,
-                "published_date" => $book->published_date->toDateString(),
-                "status" => $book->status,
-                "created_at" => $book->created_at->toDateTimeString(),
-                "updated_at" => $book->updated_at->toDateTimeString()
-            ];
+        if ($user->save()) {
             $message = [
-                'msg' => 'Book created',
-                'book' => $data
+                'msg' => 'USer created',
+                'user' => $user
             ];
             return response()->json($message, 201);
         }
@@ -77,7 +64,7 @@ class UserController extends Controller
             'error' => 'Error during creation'
         ];
 
-        return response()->json($response, 404);   */     
+        return response()->json($response, 404);        
     }
 
     /**
@@ -88,8 +75,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        /*$book = Book::find($id);
-        if (empty($book)){
+        $user = User::find($id);
+        if (empty($user)){
             $response = [
                 'error' => 'Not Found.'
             ];
@@ -97,9 +84,9 @@ class UserController extends Controller
             return response()->json($response, 404);
         }
         $response = [
-            'response' => $book
+            'response' => $user
         ];
-        return response()->json($response, 200);*/
+        return response()->json($response, 200);
     }
 
     /**
@@ -111,8 +98,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*$book = Book::find($id);
-        if (empty($book)){
+        $user = User::find($id);
+        if (empty($user)){
             $response = [
                 'error' => 'Not Found.'
             ];
@@ -121,51 +108,42 @@ class UserController extends Controller
         }
 
         $name = strip_tags(trim($request->input('name')));
-        $author = strip_tags(trim($request->input('author')));
-        $category = strip_tags(trim($request->input('category')));
-        $published = strip_tags(trim($request->input('published')));
-        $status = strip_tags(trim($request->input('status')));
+        $email = strip_tags(trim($request->input('email')));
+        $phone = strip_tags(trim($request->input('phone')));
 
         if ($request->has('name')) {
             $this->validate($request, [
                 'name' => 'required|max:190',
             ]);
-            $book->name = $name;
+            $user->name = $name;
         }
-        if ($request->has('author')) {
+        if ($request->has('email')) {
             $this->validate($request, [
-                'author' => 'required|max:190',
+                'email' => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                    'email',
+                    'max:190'
+                ]
             ]);
-            $book->author = $author;
+            $user->email = $email;
         }
-        if ($request->has('category')) {
+        if ($request->has('phone')) {
             $this->validate($request, [
-                'category' => 'required|integer',
+                'phone' => 'required|numeric|max:9999999999'
             ]);
-            $book->category_id = $category;
-        }
-        if ($request->has('published')) {
-            $this->validate($request, [
-                'published' => 'required|date_format:Y-m-d',
-            ]);
-            $book->published_date = Carbon::createFromFormat('Y-m-d', $published);
-        }
-        if ($request->has('status')) {
-            $this->validate($request, [
-                'status' => 'required|boolean'
-            ]);
-            $book->status = $status;
+            $user->phone = $phone;
         }
 
-        if (!$book->update()) {
+        if (!$user->update()) {
             return response()->json(['msg' => 'Error during updating'], 404);
         }
 
         $response = [
-            'msg' => 'Book update',
+            'msg' => 'user update',
             'status' => true,
-            'service' => $book
+            'user' => $user
         ];
-        return response()->json($response, 200);*/
+        return response()->json($response, 200);
     }
 }

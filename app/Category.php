@@ -11,4 +11,9 @@ class Category extends Model
     	'description',
     	'created_at'
     ];
+
+    public function books()
+    {
+    	return $this->hasMany('App\Book');
+    }
 }

@@ -5,7 +5,7 @@
       <v-container fluid fill-height>
         <v-layout justify-center align-center>
           <v-flex shrink>
-            <Book />
+            <User />
           </v-flex>
         </v-layout>
       </v-container>
@@ -18,11 +18,11 @@
 
 <script>
   import Menu from '../components/Menu'
-  import Book from '../components/Book'
+  import User from '../components/User'
   export default {
     components: {
       Menu,
-      Book
+      User
     }
   }
 </script>
