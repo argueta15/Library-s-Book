@@ -1,8 +1,8 @@
 ## Library
 
-Sistema para una Libreria hecho con:
+Sistema para una Librería hecho con:
 
-- Laraver 5.4
+- Laravel 5.4
 - Vue.js
 - Vuetify.js
 
@@ -11,28 +11,28 @@ Sistema para una Libreria hecho con:
 - `git clone https://github.com/argueta15/Library-s-Book.git`
 - `composer install`
 - `npm install or yarn install`
-- `Cambia el archivo .env.example por .env y configura la base de datos.`
+- Cambia el archivo: `.env.example` por `.env` y configura la base de datos.
 - `php artisan key:generate`
 - `php artisan migrate --seed`
 - `php artisan passport:install`
 
-- Copie el Client Secret con ID 2 que acaba de generar y cambielo en la siguiente ruta:
+- Copie el Client Secret con ID 2 que acaba de generar y cámbielo en la siguiente ruta:
 - `resouces/assets/js/config.js`
 - `yarn run dev`
 - `php artisan serve`
-- `Ingresa a http://localhost:8000`
-- `Disfrute.`
+- Ingresa a `http://localhost:8000`
+- Disfrute.
 
 
 Opcional:
 
-- En caso de requerirlo cambie axios.defaults.baseURL en el archivo resouces/assets/js/app.js por la url deseada.
+- En caso de requerirlo cambie `axios.defaults.baseURL` en el archivo `resouces/assets/js/app.js` por la url deseada.
 
 
-Seleccione algun usuario de tipo admin e inicie sesion.
+Seleccione algún usuario de tipo admin e inicie sesión.
 
-email: example@example.com
-password: secret
+`email: example@example.com`
+`password: secret`
 
 ## Routes
 
