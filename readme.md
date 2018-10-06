@@ -1,25 +1,38 @@
-## Library Test
+## Library
 
-Library System make with:
+Sistema para una Libreria hecho con:
 
 - Laraver 5.4
 - Vue.js
 - Vuetify.js
 
-## Instalación
+## Instalación.
 
 - `git clone https://github.com/argueta15/Library-s-Book.git`
 - `composer install`
 - `npm install or yarn install`
+- `Cambia el archivo .env.example por .env y configura la base de datos.`
 - `php artisan key:generate`
-- `install bd`
-php artisan migrate --seed
-Entrar con algun usuario admin
+- `php artisan migrate --seed`
 - `php artisan passport:install`
-- De ser necesario cambiar clientSecret en el archivo resouces/assets/js/config.js
+
+- Copie el Client Secret con ID 2 que acaba de generar y cambielo en la siguiente ruta:
+- `resouces/assets/js/config.js`
+- `yarn run dev`
 - `php artisan serve`
-- `http://localhost:8000`
-- De ser necesario cambiar axios.defaults.baseURL en el archivo resouces/assets/js/app.js
+- `Ingresa a http://localhost:8000`
+- `Disfrute.`
+
+
+Opcional:
+
+- En caso de requerirlo cambie axios.defaults.baseURL en el archivo resouces/assets/js/app.js por la url deseada.
+
+
+Seleccione algun usuario de tipo admin e inicie sesion.
+
+email: example@example.com
+password: secret
 
 ## Routes
 
@@ -58,3 +71,7 @@ Categories
 - GET `http://localhost:8000/api/v1/categories/{id}`
 - POST `http://localhost:8000/api/v1/categories`
 - PATCH `http://localhost:8000/api/v1/categories/{id}`
+
+Ejemplo:
+
+<img src="/library_system.png" alt="">
