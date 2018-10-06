@@ -23,21 +23,21 @@ const router = new VueRouter({
 			path: "/admin",
 			component: require('./pages/Admin.vue'),
 			meta: {
-				forVisitors: false
+				forAuth: true
 			}
 		},
 		{
 			path: "/admin/categories",
 			component: require('./pages/Category.vue'),
 			meta: {
-				forVisitors: false
+				forAuth: true
 			}
 		},
 		{
 			path: "/admin/users",
 			component: require('./pages/User.vue'),
 			meta: {
-				forVisitors: false
+				forAuth: true
 			}
 		}
 

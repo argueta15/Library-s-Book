@@ -191,6 +191,7 @@
           .then(response => {
             if (response.status == 200){
               this.items = response.data.response
+              this.pagination.totalItems = this.items.length
             }
           }).catch(() => {
             console.error("Error in Api categories.")
@@ -230,12 +231,12 @@
               if (response.status == 200){
                 this.pagination.totalItems = this.items.length
                 this.snackbar = true
-                this.text = 'Book update Ok..'
+                this.text = 'Category update Ok..'
                 this.color = 'green'
                 this.close()
               }
             }).catch(error => {
-              console.error("Error in Api update books.")
+              console.error("Error in Api update categories.")
               if (error.response.status == 422){
                 var msg = ''
                 let err = error.response.data
@@ -264,12 +265,12 @@
                 this.items.push(response.data.category)
                 this.pagination.totalItems = this.items.length
                 this.snackbar = true
-                this.text = 'Book create Ok..'
+                this.text = 'Category create Ok..'
                 this.color = 'green'
                 this.close()
               }
             }).catch(error => {
-              console.error("Error in Api create books.")
+              console.error("Error in Api create categories.")
               if (error.response.status == 422){
                 var msg = ''
                 let err = error.response.data

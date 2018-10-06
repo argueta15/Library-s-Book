@@ -19,6 +19,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('type', 'guest')->get();
+        foreach ($users as $user) {
+            $user->books = $user->books()->where('book_user.status', 1)->get();
+        }
         $response = [
             'response' => $users
         ];

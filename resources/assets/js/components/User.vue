@@ -88,6 +88,14 @@
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.email }}</td>
         <td class="text-xs-right">{{ props.item.phone }}</td>
+        <td class="text-xs-right">
+          <template v-for="book in props.item.books">
+            - {{ book.name }} <br />
+          </template>
+          <template v-if="props.item.books.length < 1">
+            -Not
+          </template>
+        </td>
         <td class="justify-center layout px-0">
           <v-icon
             small
@@ -153,6 +161,7 @@
         },
         { text: 'Email', value: 'email' },
         { text: 'Phone', value: 'phone' },
+        { text: 'Book Borrowed', value: 'book' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
       editStatusItem: {
@@ -206,6 +215,7 @@
           .then(response => {
             if (response.status == 200){
               this.items = response.data.response
+              this.pagination.totalItems = this.items.length
             }
           }).catch(() => {
             console.error("Error in Api users.")
@@ -251,7 +261,7 @@
                 this.close()
               }
             }).catch(error => {
-              console.error("Error in Api update books.")
+              console.error("Error in Api update users.")
               if (error.response.status == 422){
                 var msg = ''
                 let err = error.response.data
@@ -286,7 +296,7 @@
                 this.close()
               }
             }).catch(error => {
-              console.error("Error in Api create books.")
+              console.error("Error in Api create users.")
               if (error.response.status == 422){
                 var msg = ''
                 let err = error.response.data

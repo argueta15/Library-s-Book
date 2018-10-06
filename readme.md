@@ -13,6 +13,8 @@ Library System make with:
 - `npm install or yarn install`
 - `php artisan key:generate`
 - `install bd`
+php artisan migrate --seed
+Entrar con algun usuario admin
 - `php artisan passport:install`
 - De ser necesario cambiar clientSecret en el archivo resouces/assets/js/config.js
 - `php artisan serve`
@@ -31,20 +33,27 @@ Library System make with:
 ## Apis
 
 Login
+
 - POST `http://localhost:8000/oauth/token`
+
 Books
+
 - GET `http://localhost:8000/api/v1/books/`
 - GET `http://localhost:8000/api/v1/books/{id}`
 - POST `http://localhost:8000/api/v1/books`
 - PATCH `http://localhost:8000/api/v1/books/{id}`
 - DELETE `http://localhost:8000/api/v1/books/{id}`
 - POST `http://localhost:8000/api/v1/books/status/{id}`
+
 User
+
 - GET `http://localhost:8000/api/v1/users/`
 - GET `http://localhost:8000/api/v1/users/{id}`
 - POST `http://localhost:8000/api/v1/users`
 - PATCH `http://localhost:8000/api/v1/users/{id}`
+
 Categories
+
 - GET `http://localhost:8000/api/v1/categories/`
 - GET `http://localhost:8000/api/v1/categories/{id}`
 - POST `http://localhost:8000/api/v1/categories`

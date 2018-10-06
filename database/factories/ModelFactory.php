@@ -20,5 +20,24 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'phone' => $faker->isbn10,
+        'type' => $faker->randomElement(['admin','guest'])
+    ];
+});
+
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->unique()->sentence(1),
+        'description' => $faker->text(140)
+    ];
+});
+
+$factory->define(App\Book::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->unique()->sentence(2),
+        'author' => $faker->name,
+        'category_id' => $faker->numberBetween($min = 1, $max = 50),
+        'published_date' => $faker->date(),
+        'status' => 1
     ];
 });
